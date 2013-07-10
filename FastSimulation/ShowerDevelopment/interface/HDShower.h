@@ -38,6 +38,7 @@ class HDShower
 	   HcalHitMaker* myHcalHitMaker,
 	   int onECAL, 
 	   double epart,
+           double pmip,
            DQMStore * const dbeIn);
 
   int getmip() {return mip;}
@@ -101,6 +102,7 @@ class HDShower
 
   // Input energy to distribute
   double e;
+  double pmip;
 
   // HCAL losses option (0-off, 1-on)
   int lossesOpt;
