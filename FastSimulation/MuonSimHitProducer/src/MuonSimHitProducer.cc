@@ -125,8 +125,8 @@ MuonSimHitProducer::beginRun(edm::Run const& run, const edm::EventSetup & es) {
   edm::ESHandle<Propagator>             propagator;
 
   es.get<IdealMagneticFieldRecord>().get(magField);
-  es.get<MuonGeometryRecord>().get("MisAligned",dtGeometry);
-  es.get<MuonGeometryRecord>().get("MisAligned",cscGeometry);
+  es.get<MuonGeometryRecord>().get(dtGeometry);
+  es.get<MuonGeometryRecord>().get(cscGeometry);
   es.get<MuonGeometryRecord>().get(rpcGeometry);
 
   magfield = &(*magField);
