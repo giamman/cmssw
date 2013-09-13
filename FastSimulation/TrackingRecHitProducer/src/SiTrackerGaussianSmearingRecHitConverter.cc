@@ -504,7 +504,7 @@ SiTrackerGaussianSmearingRecHitConverter::beginRun(edm::Run const&, const edm::E
   geometry = &(*theGeometry);
 
   edm::ESHandle<TrackerGeometry> theMisAlignedGeometry;
-  es.get<TrackerDigiGeometryRecord>().get("MisAligned",theMisAlignedGeometry);
+  es.get<TrackerDigiGeometryRecord>().get(theMisAlignedGeometry);
   misAlignedGeometry = &(*theMisAlignedGeometry);
 
   const MagneticField* magfield;
