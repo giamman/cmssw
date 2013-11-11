@@ -3,12 +3,14 @@
 #include "FWCore/Framework/interface/one/EDProducer.h"
 
 RecoTrackAccumulator::RecoTrackAccumulator(const edm::ParameterSet& conf, edm::one::EDProducerBase& mixMod, edm::ConsumesCollector& iC) :
-  GeneralTrackInput_(conf.getParameter<edm::InputTag>("GeneralTrackInput")),
+  GeneralTrackInputSignal_(conf.getParameter<edm::InputTag>("GeneralTrackInputSignal")),
+  GeneralTrackInputPileup_(conf.getParameter<edm::InputTag>("GeneralTrackInputPileup")),
   GeneralTrackOutput_(conf.getParameter<std::string>("GeneralTrackOutput"))
 {
 
   mixMod.produces<reco::TrackCollection>(GeneralTrackOutput_);
-  iC.consumes<reco::TrackCollection>(GeneralTrackInput_);
+  iC.consumes<reco::TrackCollection>(GeneralTrackInputSignal_);
+  iC.consumes<reco::TrackCollection>(GeneralTrackInputPileup_);
 }
   
 RecoTrackAccumulator::~RecoTrackAccumulator() {
@@ -25,7 +27,7 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
   
 
   edm::Handle<reco::TrackCollection> tracks;
-  e.getByLabel(GeneralTrackInput_, tracks);
+  e.getByLabel(GeneralTrackInputSignal_, tracks);
   
   if (tracks.isValid()) {
     for (auto const& track : *tracks) {
@@ -39,7 +41,7 @@ void RecoTrackAccumulator::accumulate(PileUpEventPrincipal const& e, edm::EventS
 
   if (e.bunchCrossing()==0) {
     edm::Handle<reco::TrackCollection> tracks;
-    e.getByLabel(GeneralTrackInput_, tracks);
+    e.getByLabel(GeneralTrackInputPileup_, tracks);
     
     if (tracks.isValid()) {
       for (reco::TrackCollection::const_iterator track = tracks->begin();  track != tracks->end();  ++track) {

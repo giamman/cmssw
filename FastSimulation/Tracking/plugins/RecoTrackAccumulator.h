@@ -54,7 +54,8 @@ class RecoTrackAccumulator : public DigiAccumulatorMixMod
   
  private:
   std::auto_ptr<reco::TrackCollection> NewTrackList_;
-  edm::InputTag GeneralTrackInput_;
+  edm::InputTag GeneralTrackInputSignal_;
+  edm::InputTag GeneralTrackInputPileup_;
   std::string GeneralTrackOutput_;
 };
 
