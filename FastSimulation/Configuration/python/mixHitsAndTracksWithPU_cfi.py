@@ -37,7 +37,9 @@ simHcalUnsuppressedDigis = cms.EDAlias(
     )
 
 generalTracks = cms.EDAlias(
-    mix = cms.VPSet( cms.PSet(type=cms.string('recoTracks') ) )
+    mix = cms.VPSet( cms.PSet(type=cms.string('recoTracks'),
+                              fromProductInstance = cms.string('generalTracks'),
+                              toProductInstance = cms.string('') ) )
     )
 
 
