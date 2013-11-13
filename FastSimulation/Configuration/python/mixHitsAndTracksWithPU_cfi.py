@@ -41,6 +41,11 @@ generalTracks = cms.EDAlias(
                               fromProductInstance = cms.string('generalTracks'),
                               toProductInstance = cms.string('') ) )
     )
+generalTrackExtras = cms.EDAlias(
+    mix = cms.VPSet( cms.PSet(type=cms.string('recoTrackExtras'),
+                              fromProductInstance = cms.string('generalTracks'),
+                              toProductInstance = cms.string('') ) )
+    )
 
 
 from SimGeneral.MixingModule.ecalDigitizer_cfi import *

@@ -21,17 +21,9 @@
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #include "DataFormats/TrackReco/interface/TrackExtra.h"
+#include "DataFormats/TrackReco/interface/TrackExtraFwd.h"
 
 
-/*
-namespace edm {
-  class EDProducer;
-  class Event;
-  class EventSetup;
-  class ParameterSet;
-  template<typename T> class Handle;
-}
-*/
 namespace edm {
   class ConsumesCollector;
   template<typename T> class Handle;
@@ -54,9 +46,15 @@ class RecoTrackAccumulator : public DigiAccumulatorMixMod
   
  private:
   std::auto_ptr<reco::TrackCollection> NewTrackList_;
+  std::auto_ptr<reco::TrackExtraCollection> NewTrackExtraList_;
+
   edm::InputTag GeneralTrackInputSignal_;
   edm::InputTag GeneralTrackInputPileup_;
   std::string GeneralTrackOutput_;
+
+  edm::InputTag GeneralTrackExtraInputSignal_;
+  edm::InputTag GeneralTrackExtraInputPileup_;
+  std::string GeneralTrackExtraOutput_;
 };
 
 
