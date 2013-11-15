@@ -45,7 +45,10 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
     for (auto const& track : *tracks) {
       NewTrackList_->push_back(track);
       // corresponding TrackExtra:
-      //      const reco::TrackExtraRef & trackExtraRef_(track.extra());
+      const reco::TrackExtraRef & trackExtraRef_(track.extra());
+      NewTrackExtraList_->push_back(*trackExtraRef_);
+      // alternative: recreate from scratch
+      /*
       reco::TrackExtra trackExtra(track.outerPosition(),
 				  track.outerMomentum(),
 				  track.outerOk(),
@@ -59,6 +62,8 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
 				  track.seedDirection(),
 				  track.seedRef()); 
       NewTrackExtraList_->push_back(trackExtra);
+      */
+
     }
     //    for (auto const& trackExtra : *trackExtras) {
     //      NewTrackExtraList_->push_back(trackExtra);
