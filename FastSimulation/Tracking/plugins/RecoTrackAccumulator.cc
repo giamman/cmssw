@@ -63,7 +63,6 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
 				  track.seedRef()); 
       NewTrackExtraList_->push_back(trackExtra);
       */
-
     }
     //    for (auto const& trackExtra : *trackExtras) {
     //      NewTrackExtraList_->push_back(trackExtra);
