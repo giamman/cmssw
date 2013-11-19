@@ -47,6 +47,7 @@ class RecoTrackAccumulator : public DigiAccumulatorMixMod
  private:
   std::auto_ptr<reco::TrackCollection> NewTrackList_;
   std::auto_ptr<reco::TrackExtraCollection> NewTrackExtraList_;
+  reco::TrackExtraRefProd rTrackExtras;
 
   edm::InputTag GeneralTrackInputSignal_;
   edm::InputTag GeneralTrackInputPileup_;
