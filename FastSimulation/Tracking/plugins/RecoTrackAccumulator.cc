@@ -78,27 +78,28 @@ void RecoTrackAccumulator::accumulate(PileUpEventPrincipal const& e, edm::EventS
     e.getByLabel(GeneralTrackInputPileup_, tracks);
     e.getByLabel(GeneralTrackExtraInputPileup_, trackExtras);
     
-    if (tracks.isValid()) { // remove for the moment, then set it equal to the previous accumulate()
-      /*
-      //      for (reco::TrackCollection::const_iterator track = tracks->begin();  track != tracks->end();  ++track) {
+    if (tracks.isValid()) { 
       for (auto const& track : *tracks) {
-	//	NewTrackList_->push_back(*track);
 	NewTrackList_->push_back(track);
-	reco::TrackExtra trackExtra(track.outerPosition(),
-				    track.outerMomentum(),
-				    track.outerOk(),
-				    track.innerPosition(),
-				    track.innerMomentum(),
-				    track.innerOk(),
-				    track.outerStateCovariance(),
-				    track.outerDetId(),
-				    track.innerStateCovariance(),
-				    track.innerDetId(),
-				    track.seedDirection(),
-				    track.seedRef()); 
-	NewTrackExtraList_->push_back(trackExtra);
+	// corresponding TrackExtra:
+	const reco::TrackExtraRef & trackExtraRef_(track.extra());
+	NewTrackExtraList_->push_back(*trackExtraRef_);
+	/*
+	  NewTrackExtraList_->push_back( reco::TrackExtra(track.outerPosition(),
+	  track.outerMomentum(),
+	  track.outerOk(),
+	  track.innerPosition(),
+	  track.innerMomentum(),
+	  track.innerOk(),
+	  track.outerStateCovariance(),
+	  track.outerDetId(),
+	  track.innerStateCovariance(),
+	  track.innerDetId(),
+	  track.seedDirection(),
+	  track.seedRef()) );
+	*/
+	NewTrackList_->back().setExtra( reco::TrackExtraRef( rTrackExtras, NewTrackExtraList_->size() - 1) );
       }
-      */
     }
   }
 }
