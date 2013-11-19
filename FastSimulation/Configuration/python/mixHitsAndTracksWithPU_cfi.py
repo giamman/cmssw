@@ -1,28 +1,10 @@
 import FWCore.ParameterSet.Config as cms
 
-simEcalUnsuppressedDigis = cms.EDAlias( #remove?
-    mixSimCaloHits = cms.VPSet(
-    cms.PSet(type = cms.string('EBDigiCollection')),
-    cms.PSet(type = cms.string('EEDigiCollection')),
-    cms.PSet(type = cms.string('ESDigiCollection'))
-    )
-    )
-
 simEcalUnsuppressedDigis = cms.EDAlias(
     mix = cms.VPSet(
     cms.PSet(type = cms.string('EBDigiCollection')),
     cms.PSet(type = cms.string('EEDigiCollection')),
     cms.PSet(type = cms.string('ESDigiCollection'))
-    )
-    )
-
-simHcalUnsuppressedDigis = cms.EDAlias(#remove?
-    mixSimCaloHits = cms.VPSet(
-    cms.PSet(type = cms.string('HBHEDataFramesSorted')),
-    cms.PSet(type = cms.string('HFDataFramesSorted')),
-    cms.PSet(type = cms.string('HODataFramesSorted')),
-    cms.PSet(type = cms.string('HcalUpgradeDataFramesSorted')),
-    cms.PSet(type = cms.string('ZDCDataFramesSorted'))
     )
     )
 
