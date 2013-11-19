@@ -12,7 +12,7 @@ RecoTrackAccumulator::RecoTrackAccumulator(const edm::ParameterSet& conf, edm::o
 {
 
   mixMod.produces<reco::TrackCollection>(GeneralTrackOutput_);
-  mixMod.produces<reco::TrackExtraCollection>(GeneralTrackOutput_);
+  mixMod.produces<reco::TrackExtraCollection>(GeneralTrackExtraOutput_);
 
   iC.consumes<reco::TrackCollection>(GeneralTrackInputSignal_);
   iC.consumes<reco::TrackExtraCollection>(GeneralTrackExtraInputSignal_);
@@ -48,10 +48,9 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
     for (auto const& track : *tracks) {
       NewTrackList_->push_back(track);
       // corresponding TrackExtra:
-      /*
       const reco::TrackExtraRef & trackExtraRef_(track.extra());
       NewTrackExtraList_->push_back(*trackExtraRef_);
-      */
+      /*
       NewTrackExtraList_->push_back( reco::TrackExtra(track.outerPosition(),
 						      track.outerMomentum(),
 						      track.outerOk(),
@@ -64,6 +63,7 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
 						      track.innerDetId(),
 						      track.seedDirection(),
 						      track.seedRef()) );
+      */
       NewTrackList_->back().setExtra( reco::TrackExtraRef( rTrackExtras, NewTrackExtraList_->size() - 1) );
     }
   }
