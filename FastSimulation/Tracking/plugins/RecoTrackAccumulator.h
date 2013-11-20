@@ -45,6 +45,8 @@ class RecoTrackAccumulator : public DigiAccumulatorMixMod
   virtual void finalizeEvent(edm::Event& e, edm::EventSetup const& c);
   
  private:
+  template<class T> void accumulateEvent(const T& e, edm::EventSetup const& c, edm::Handle<reco::TrackCollection> t);
+
   std::auto_ptr<reco::TrackCollection> NewTrackList_;
   std::auto_ptr<reco::TrackExtraCollection> NewTrackExtraList_;
   reco::TrackExtraRefProd rTrackExtras;

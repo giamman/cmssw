@@ -43,6 +43,35 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
   e.getByLabel(GeneralTrackInputSignal_, tracks);
   e.getByLabel(GeneralTrackExtraInputSignal_, trackExtras);
 
+  // Call the templated version that does the same for both signal and pileup events
+  accumulateEvent( e, iSetup, tracks );
+
+}
+
+
+void RecoTrackAccumulator::accumulate(PileUpEventPrincipal const& e, edm::EventSetup const& iSetup) {
+
+  if (e.bunchCrossing()==0) {
+    edm::Handle<reco::TrackCollection> tracks;
+    edm::Handle<reco::TrackExtraCollection> trackExtras;
+    e.getByLabel(GeneralTrackInputPileup_, tracks);
+    e.getByLabel(GeneralTrackExtraInputPileup_, trackExtras);
+    
+    // Call the templated version that does the same for both signal and pileup events
+    accumulateEvent( e, iSetup, tracks );
+
+  }
+}
+
+void RecoTrackAccumulator::finalizeEvent(edm::Event& e, const edm::EventSetup& iSetup) {
+  
+  e.put( NewTrackList_, GeneralTrackOutput_ );
+  e.put( NewTrackExtraList_, GeneralTrackExtraOutput_ );
+
+}
+
+
+template<class T> void RecoTrackAccumulator::accumulateEvent(const T& e, edm::EventSetup const& iSetup, edm::Handle<reco::TrackCollection> tracks) {
 
   if (tracks.isValid()) {
     for (auto const& track : *tracks) {
@@ -69,45 +98,3 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
   }
 
 }
-
-void RecoTrackAccumulator::accumulate(PileUpEventPrincipal const& e, edm::EventSetup const& iSetup) {
-
-  if (e.bunchCrossing()==0) {
-    edm::Handle<reco::TrackCollection> tracks;
-    edm::Handle<reco::TrackExtraCollection> trackExtras;
-    e.getByLabel(GeneralTrackInputPileup_, tracks);
-    e.getByLabel(GeneralTrackExtraInputPileup_, trackExtras);
-    
-    if (tracks.isValid()) { 
-      for (auto const& track : *tracks) {
-	NewTrackList_->push_back(track);
-	// corresponding TrackExtra:
-	const reco::TrackExtraRef & trackExtraRef_(track.extra());
-	NewTrackExtraList_->push_back(*trackExtraRef_);
-	/*
-	  NewTrackExtraList_->push_back( reco::TrackExtra(track.outerPosition(),
-	  track.outerMomentum(),
-	  track.outerOk(),
-	  track.innerPosition(),
-	  track.innerMomentum(),
-	  track.innerOk(),
-	  track.outerStateCovariance(),
-	  track.outerDetId(),
-	  track.innerStateCovariance(),
-	  track.innerDetId(),
-	  track.seedDirection(),
-	  track.seedRef()) );
-	*/
-	NewTrackList_->back().setExtra( reco::TrackExtraRef( rTrackExtras, NewTrackExtraList_->size() - 1) );
-      }
-    }
-  }
-}
-
-void RecoTrackAccumulator::finalizeEvent(edm::Event& e, const edm::EventSetup& iSetup) {
-  
-  e.put( NewTrackList_, GeneralTrackOutput_ );
-  e.put( NewTrackExtraList_, GeneralTrackExtraOutput_ );
-
-}
-
