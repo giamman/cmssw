@@ -31,7 +31,7 @@ void RecoTrackAccumulator::initializeEvent(edm::Event const& e, edm::EventSetup 
   NewTrackExtraList_ = std::auto_ptr<reco::TrackExtraCollection>(new reco::TrackExtraCollection());
 
   // this is needed to get the ProductId of the TrackExtra collection
-  rTrackExtras=const_cast<edm::Event&>( e ).getRefBeforePut<reco::TrackExtraCollection>();
+  rTrackExtras=const_cast<edm::Event&>( e ).getRefBeforePut<reco::TrackExtraCollection>(GeneralTrackExtraOutput_);
 
 }
   
