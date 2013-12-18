@@ -6,8 +6,8 @@ RecoTrackAccumulator::RecoTrackAccumulator(const edm::ParameterSet& conf, edm::o
   GeneralTrackInputSignal_(conf.getParameter<edm::InputTag>("GeneralTrackInputSignal")),
   GeneralTrackInputPileup_(conf.getParameter<edm::InputTag>("GeneralTrackInputPileup")),
   GeneralTrackOutput_(conf.getParameter<std::string>("GeneralTrackOutput")),
-  GeneralTrackExtraInputSignal_(conf.getParameter<edm::InputTag>("GeneralTrackExtraInputSignal")),
-  GeneralTrackExtraInputPileup_(conf.getParameter<edm::InputTag>("GeneralTrackExtraInputPileup")),
+  //  GeneralTrackExtraInputSignal_(conf.getParameter<edm::InputTag>("GeneralTrackExtraInputSignal")),
+  //  GeneralTrackExtraInputPileup_(conf.getParameter<edm::InputTag>("GeneralTrackExtraInputPileup")),
   GeneralTrackExtraOutput_(conf.getParameter<std::string>("GeneralTrackExtraOutput"))
 {
 
@@ -15,10 +15,10 @@ RecoTrackAccumulator::RecoTrackAccumulator(const edm::ParameterSet& conf, edm::o
   mixMod.produces<reco::TrackExtraCollection>(GeneralTrackExtraOutput_);
 
   iC.consumes<reco::TrackCollection>(GeneralTrackInputSignal_);
-  iC.consumes<reco::TrackExtraCollection>(GeneralTrackExtraInputSignal_);
+  //  iC.consumes<reco::TrackExtraCollection>(GeneralTrackExtraInputSignal_);
 
   iC.consumes<reco::TrackCollection>(GeneralTrackInputPileup_);
-  iC.consumes<reco::TrackExtraCollection>(GeneralTrackExtraInputPileup_);
+  //  iC.consumes<reco::TrackExtraCollection>(GeneralTrackExtraInputPileup_);
 }
   
 RecoTrackAccumulator::~RecoTrackAccumulator() {
@@ -39,9 +39,9 @@ void RecoTrackAccumulator::accumulate(edm::Event const& e, edm::EventSetup const
   
 
   edm::Handle<reco::TrackCollection> tracks;
-  edm::Handle<reco::TrackExtraCollection> trackExtras;
+  //  edm::Handle<reco::TrackExtraCollection> trackExtras;//temp
   e.getByLabel(GeneralTrackInputSignal_, tracks);
-  e.getByLabel(GeneralTrackExtraInputSignal_, trackExtras);
+  //  e.getByLabel(GeneralTrackExtraInputSignal_, trackExtras);//temp
 
   // Call the templated version that does the same for both signal and pileup events
   accumulateEvent( e, iSetup, tracks );
@@ -53,9 +53,9 @@ void RecoTrackAccumulator::accumulate(PileUpEventPrincipal const& e, edm::EventS
 
   if (e.bunchCrossing()==0) {
     edm::Handle<reco::TrackCollection> tracks;
-    edm::Handle<reco::TrackExtraCollection> trackExtras;
+    //    edm::Handle<reco::TrackExtraCollection> trackExtras;//temp
     e.getByLabel(GeneralTrackInputPileup_, tracks);
-    e.getByLabel(GeneralTrackExtraInputPileup_, trackExtras);
+    //    e.getByLabel(GeneralTrackExtraInputPileup_, trackExtras);//temp
     
     // Call the templated version that does the same for both signal and pileup events
     accumulateEvent( e, iSetup, tracks );
@@ -74,6 +74,7 @@ void RecoTrackAccumulator::finalizeEvent(edm::Event& e, const edm::EventSetup& i
 template<class T> void RecoTrackAccumulator::accumulateEvent(const T& e, edm::EventSetup const& iSetup, edm::Handle<reco::TrackCollection> tracks) {
 
   if (tracks.isValid()) {
+
     for (auto const& track : *tracks) {
       NewTrackList_->push_back(track);
       // corresponding TrackExtra:
@@ -93,7 +94,8 @@ template<class T> void RecoTrackAccumulator::accumulateEvent(const T& e, edm::Ev
 						      track.seedDirection(),
 						      track.seedRef()) );
       */
-      NewTrackList_->back().setExtra( reco::TrackExtraRef( rTrackExtras, NewTrackExtraList_->size() - 1) );
+      //      NewTrackList_->back().setExtra( reco::TrackExtraRef( rTrackExtras, NewTrackExtraList_->size() - 1) );
+      NewTrackList_->back().setExtra(trackExtraRef_);
     }
   }
 
