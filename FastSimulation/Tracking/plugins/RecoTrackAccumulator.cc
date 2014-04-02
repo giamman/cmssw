@@ -85,14 +85,10 @@ template<class T> void RecoTrackAccumulator::accumulateEvent(const T& e, edm::Ev
       // track extras:
       NewTrackExtraList_->push_back(tracksExtras->at(track_counter));
       NewTrackList_->back().setExtra( reco::TrackExtraRef( rTrackExtras, NewTrackExtraList_->size() - 1) );
-      //reco::TrackExtra & tx = NewTrackExtraList_->back();
-      //tx.setResiduals(track.residuals());
       // rechits:
       for( trackingRecHit_iterator hit = track.recHitsBegin(); hit != track.recHitsEnd(); ++ hit ) {
-	//NewHitList_->push_back( (*hit)->clone() ); // is this safe?
 	NewHitList_->push_back( (*hits)[hit_counter] );
-	//	tx.add( TrackingRecHitRef( rHits, NewHitList_->size() - 1) );
-	NewTrackExtraList_->at(track_counter).add( TrackingRecHitRef( rHits, NewHitList_->size() - 1) );
+	NewTrackExtraList_->back().add( TrackingRecHitRef( rHits, NewHitList_->size() - 1) );
 	hit_counter++;
       }
 
